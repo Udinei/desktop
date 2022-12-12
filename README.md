@@ -1236,8 +1236,7 @@ Clássica 3-tier application architecture.
 http://tutorials.jenkov.com/software-architecture/n-tier-architecture.html
 
 Responsive Web Design - RWD.
-https://brasil.uxdesign.cc/o-que-%C3%A9-responsiv
-e-web-design-ab292eb616b7
+https://brasil.uxdesign.cc/o-que-%C3%A9-responsive-web-design-ab292eb616b7
 
 Microserviços:
 https://www.redhat.com/pt-br/topics/microservices/what-are-microservices
