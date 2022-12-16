@@ -998,6 +998,7 @@ ou os recursos da IDE IntelliJ
 - Apache TomEE Web Profile  
 - Apache TomEE Microprofile  
 
+
 # Remontagem 1 - Web Server MVC
 ***Web:*** Consiste na solução projetada para ser usada por um navegador, através da internet, utilizando tecnologias web  HTML/JavaScript/CSS.  
 ***Server MVC:*** Consiste na solução web projetada para gerar o
@@ -1009,22 +1010,18 @@ misturados com os dados do lado do servidor.
 ![](img/arq_web_mvc.png)
 
 ***Aplicações Web Server MVC:*** são distribuídas por natureza, no qual o:  
-**Navegador** executa o código **front-end** HTML/JavaScript/CSS,   
+**Navegador** executa o código **front-end** HTML/JavaScript/CSS.  
+
 O **servidor remoto**  executa o processamento da **lógica de negócio**  
 E o **banco dados** roda em uma **terceira máquina remota**    
 
 O padrão ***MVC*** roda dentro do servidor de aplicação  
 **Fluxo WebServer MVC**
   
-
 ![](img/fluxo_mvc.png)  
-
-
-  
-
+ 
 <br/>
 <br/>
-
 
   ![](img/remontagem1.png) 
   
@@ -1038,10 +1035,75 @@ O padrão ***MVC*** roda dentro do servidor de aplicação
    mesma porta primária já existente, para processar a
    lógica da operação dentro do hexágono
 
-**Ambiente**
-- JSF
-- BootStrap 4
-- Apache TomEE Web Profile
+**Definições de Design**  
+Implementa os modulos View e Controler do MVC
+- Executado dentro do Application Server Java
+- Artefato de software gerado .war
+
+**Ambiente**  
+- Java 12 (Jakarta EE server faces)
+- IDE Intellij
+- Maven
+- BD HSQLDB
+- JSF 2.0
+- BootStrap 4 
+- Apache TomEE Web Profile  (Embede)
+- Spring Web 
+
+**Dependências Negócio(Hexagono)**  
+- conta.sistema
+
+**Dependências Backservices(infra)**  
+- conta.servicos
+
+**Dependências Tecnologicas**
+
+**Descrição dependências tecnologicas**
+
+**Arquivos de Configuração**
+1. spring-web-buiild5.xml
+2. web.xml
+3. faces-configxml
+
+1.1 spring-web-buiild5.xml
+Arquivo de configuração de Build do sistema, com Spring no formado xml.
+Inicializa e prepara todo do ambiente que o sistema ira rodar.
+- Banco de dados Embeded
+- Data Sorce
+- Spring transaction
+- Scan da busca de dependencias de negocio do sistema (hexagono).
+
+Arquivo que prepara para o sistem todo ambiente necessario a execução
+do sistema
+Sendo que cada build prepara a execução do sistema por ambiente de desenvolvimento
+homologação e produção. Sendo o Build 1, executado no projeto do dominio (hexagono)
+e os Builds 2, 3 e 4 executados no projeto de frontend.  
+
+2.1 web.xml  
+Arquivo de configuração do WebServlet do Java.
+Faz a chamada inicial do sistema web. 
+Le o configuração do sistema ```spring-web-buiild5.xml```e levanta
+o contexto e acesso as arquivos de configuração. 
+- Sobe o Container Spring  
+- Timeout do sistema  
+- Configuração da pagina inicial do sistema  
+- Ativa as configuração do JSF  
+- 
+3.1 faces-configxml
+Especifico para configuração do JSF.
+Faz a integra do Spring com JSF
+
+**Arquivo FrontEnd .xhtml**
+Implementa os binds e controles de acesso interno a aplicação.
+Implementações 
+- Controlador jsf
+- Formulario de input de dados (Bootstrap 4)
+
+
+***Recursos Microprofile***
+
+
+
 
 # Remontagem 2 - Web mobile  
 
@@ -1072,39 +1134,165 @@ chamada
    Remontagem Arquitetural 2 - Web Mobil
 
 **Ambiente**
-- JSF
+- JSF (implementa o MVC)
 - PrimeFaces (em vez do BootStrap 4) - RWD
 - Apache TomEE Web Profile
 
-# Remontagem 3 - Microserviços
-![](img/arq_microservico.png)
-Microservice, consiste na abordagem que desenvolve uma
-solução como uma suíte de pequenos serviços
-isolados e independentes, cada um executando
+# Remontagem 3 - Microserviços  
+**Objetivo**  
+Criar um adaptador REST que permita o  acesso ao modelo de domínio do negocio (Hexagono),  
+utilizando microserviços REST. 
+
+
+![](img/arq_microservico.png)  
+
+Um Microservice, consiste na abordagem que  
+desenvolve uma
+solução como uma suíte de pequenos serviços  
+isolados e independentes, cada um executando  
 seu próprio processo e se comunicando através
-de REST
+de REST.  
+
 
 ![](img/microservicos.png)
 
-**Definição remotagem - Microservico**
-1. Escolher um servidor de aplicação.
-2. Escolher um framework de microservices.
-3. Implementar um novo adaptador primário que
+**Definição arquiteturais**  
+1. Escolher um servidor de aplicação.  
+2. Escolher um framework de microservices.  
+3. Implementar um novo adaptador primário que 
    receba os dados via REST, repassando os input
-   para mesma porta primária já existente, para
-   processar a lógica da operação dentro do
-   hexágono
+   para mesma porta primária já existente, 
+   para processar a lógica da operação dentro do
+   hexágono.    
 
 
+**Definições de Design**  
+Implementar o modulos controler REST   
+- Executado dentro do Application Java Server   
+- Micro profile Web  
+- Será gera um artefato de software (.war)
 
 **Ambiente**
-- JSF
-- PrimeFaces (em vez do BootStrap 4) - RWD
-- Apache TomEE MicroProfile
-- JSON  
+- Java 12 (Jakarta EE server faces)
+- IDE Intellij
+- Maven
+- BD HSQLDB (Embedded)
+- Apache TomEE (Embedded) - porta 8080 
+- Web Micro Profile REST (Embeded) - porta 8090
+- Spring Web
+- Swagger Micropofile UI (Documentação da API)
+
+**Dependências Negócio(Hexagono)**
+- conta.sistema
+
+**Dependências Backservices(infra)**
+- conta.servicos
+
+**Dependências Tecnologicas**
+1. Maven
+2. CDI
+3. Spring IoC
+4. Spring Transactions
+5. Spring Jdbc
+6. Hsqldb
+7. Spring Web
+8. JEE 8 Web Profile
+9. Microprofile
+10. Microprofile Swagger UI  
 
 
-**Configuração** 
+**pacotes infra**   
+conta.micro.infra - Infra do spring  
+conta.micro.rest - Contém a implementação da API REST    
+conta.micro.to - Contém a implementação das classes dos obejtos de tranfencia     
+
+
+**Recursos Microprofile**  
+- Health - Endpoint verifica se o serviço esta on  
+- Metrics  - Memoria, Jvm
+- Openapi.json - json com todos os endponts do serviço  
+- Swagger microprofile - UI de interface para documentação da API REST    
+
+
+
+**Arquivos de Configuração**  
+1. spring-web-buiild5.xml
+2. web.xml 
+3. index.jsp  
+4. pom.xml    
+5. spring.xml  
+ 
+
+1.1 spring-web-buiild5.xml  
+- Arquivo de configuração de Build do sistema, com Spring no formado xml.
+Inicializa e prepara todo do ambiente que o sistema ira rodar.
+- Banco de dados Embedded
+- Data Sorce
+- Spring transaction
+- Scan da busca de dependencias de negocio do sistema (hexagono).
+
+Arquivo que prepara para o sistem todo ambiente necessario a execução
+do sistema
+Sendo que cada build prepara a execução do sistema por ambiente de desenvolvimento
+homologação e produção. Sendo o Build 1, executado no projeto do dominio (hexagono)
+e os Builds 2, 3 e 4 executados no projeto de frontend.  
+
+conta.micro.infra.Spring - Ira permitir o REST acessar os 
+beans que estão no container do sprring. 
+ 
+
+2.1 web.xml  
+- Arquivo de configuração do WebServlet do Java.
+Faz a chamada inicial do sistema web.
+Le o configuração do sistema ```spring-web-buiild5.xml```e levanta
+o contexto e acesso as arquivos de configuração.
+- Sobe o Container Spring
+- Timeout do sistema
+- Configuração da pagina inicial do sistema
+- Ativa as configuração do JSF
+
+3.1 index.jsp  
+- Nesse projeto é um arquivo especifico de links para itens gerados automaticamente,
+para monitoramento e acompanhamento das metricas   
+do micro serviço profile e acesso a pagina da documentação da API
+Rest com Swagger UI.
+Alem de uma lista em json das API do microservico.
+
+4.1 pom.xml  
+- Arquivo do Maven (Gerenciador de dependência)  
+   entre paths de URL e os servlets.  
+
+5.1 spring.xml  
+  - Reponsanvel por fazer integração
+   do spring para os beans ejb/cdi
+
+**Arquivos da implementação**
+
+**TO** - Implementa os inpus do JSON para o REST (devem ser criados pelo cliente e enviados)   
+
+**Controller (REST)** - Adaptador Microprofile REST de acesso ao hexagono API    
+
+**Classe Spring** - Beans de listerner application.
+Responsavel por fazer a integração do spring com os beans
+ejb/cdi. Responsavel por Injetar o hexagono no contexto do microprofile.
+O REST esta rodando em cima do JEE que vai rodar cima do Microprofile.
+o Hexagono esta rodano no spring framework, os dois container
+rodam juntos o Spring e o Microprofile.
+
+**NegocioException** - Mapeia os erros do hexagono para um BadRequest do REST
+que coloca a msg vinda do hexano no contexto do REST micro profile.
+
+**CORSFilter**  
+Filtro parae habilitar do servidor http fazer chamadas para diferentes dominios
+para expor a API Rest.
+
+**ContaMicroservices**  
+Classe auxiliar de configuração do Microprofile, para subir o endereço padrão
+do aplication REST.
+
+**Implementações visual**
+- Não tem, somente pagina de links para metricas do microprofile.
+- Swagger UI para documentação da API do microprofile REST
 
 
 # Remontagem 4 - Desktop Thin Cliente 
@@ -1134,12 +1322,93 @@ servidor central ao invés de fazer isso locamente.
  
 # Remontagem 5 - Web Mobile Thin Client  
 
-A quinta remontagem arquitetural é fazer o  
-front-end web mobile da transferência bancária    
+**Objetivos**  
+A quinta remontagem arquitetural é fazer o front-end web mobile da transferência bancária    
 funcionar como: ***thin client REST do microservices**.  
+- Backend Spring totalmente removido
+- Nesse projeto somente o FrontEnd será implementado (View)
 
 
 ![](img/arq_remontagem_web_moblile.png)
+
+**Definição arquiteturais**
+1. Escolher um servidor de aplicação.
+2. Escolher um framework de microservices.
+3. Implementar um novo adaptador primário que
+   receba os dados via REST, repassando os input
+   para mesma porta primária já existente, para
+   processar a lógica da operação dentro do
+   hexágono
+
+
+**Definições de Design**  
+Implementa o modulos controler REST
+- Executado dentro do Application Java Server
+- Micro profile Web
+- Artefato de software gerado (.war)
+
+**Ambiente**
+- Java 12 (Jakarta EE server faces)
+- IDE Intellij
+- Maven
+- BD HSQLDB (Embedded)
+- Apache TomEE (Embedded) - porta 8090
+- Web Micro Profile REST (Embeded)
+- Spring Web REST
+- Swagger Micropofile UI (Doc rest API)
+- Jackson databind (provedor json)
+- JSF
+- Primefaces  
+
+  
+**Dependências Negócio(Hexagono)**
+- Não tem. Acesso sera via endpoint REST do projeto de microserviço.  
+
+**Dependências Backservices(infra)**
+- Não tem.
+
+**Dependências Tecnologicas**  
+CDI beans do java EE
+
+**Arquivos de Configuração**
+
+1. web.xml
+2. beans.xml
+3. faces-config.xml
+
+1.1 web.xml  
+Arquivo de configuração do WebServlet do Java.
+Faz a chamada inicial do sistema web.
+Le o configuração doo contexto e acesso as arquivos de configuração.  
+
+Utilizado também para:  
+- Subir o Container Java EE
+- Configrar Timeout do sistema
+- Configurar a pagina inicial do sistema
+- Ativar as configuração do JSF
+- Alterar o thema da aplicação
+
+2.1 beans.xml  
+Arquivo de configuração do CDI, container do Java EE
+
+3.1 faces-config.xml
+Arquivo de configuraçãp padrãoo do Java Server faces
+utilizado para inserir as configurações de outros frameworks,
+spring por exemplo.
+
+
+**Pacotes**  
+conta.jsf-   Contém a implementação do adaptador JSF      
+conta.to  - contem as classe de objetos de tranferencia   
+
+
+***Recursos Microprofile***  
+1. RestTemplate  
+
+**Outros Arquivos**  
+Pasta webapp:  
+estilo.css - Style css   
+transferencia.xhml  - implementação da View em primefaces  
 
 
  
