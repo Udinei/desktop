@@ -1484,9 +1484,12 @@ no terminal de execução do mesmo.
 
 # Referências 
 
-**Curso Jakarta EE REST com JAX-RS por: Fernando Franzini**  
-https://www.udemy.com/course/java-ee-rest-com-jax-rs/
-   
+**Curso Arquitetura Hexagonal com Java - C1 por: Fernando Franzini**  
+https://www.udemy.com/course/arquitetura-hexagonal-com-java-1/
+
+**Curso Arquitetura Hexagonal com Java - C2 por: Fernando Franzini**  
+https://www.udemy.com/course/arquitetura-hexagonal-com-java-c2/
+
 **Opções de Design**  
 **Organização de Pacotes: Links úteis de discussão sobre o assunto:**  
  https://proandroiddev.com/package-by-type-by-layer-by-feature-vs-package-by-layered-feature-e59921a4dffa    
